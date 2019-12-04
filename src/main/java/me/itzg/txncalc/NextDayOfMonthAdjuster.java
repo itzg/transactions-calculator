@@ -1,7 +1,5 @@
 package me.itzg.txncalc;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
@@ -20,15 +18,13 @@ public class NextDayOfMonthAdjuster implements TemporalAdjuster {
 
   @Override
   public Temporal adjustInto(Temporal temporal) {
-    final LocalDate normalized = LocalDate.from(temporal);
-
-    if (dayOfMonth <= normalized.getDayOfMonth()) {
-      return normalized
+    if (dayOfMonth <= temporal.get(ChronoField.DAY_OF_MONTH)) {
+      return temporal
           .with(ChronoField.DAY_OF_MONTH, 1)
           .plus(1, ChronoUnit.MONTHS)
           .with(ChronoField.DAY_OF_MONTH, dayOfMonth);
     } else {
-      return normalized
+      return temporal
           .with(ChronoField.DAY_OF_MONTH, dayOfMonth);
     }
 
