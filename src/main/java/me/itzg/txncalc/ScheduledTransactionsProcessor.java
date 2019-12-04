@@ -1,12 +1,14 @@
 package me.itzg.txncalc;
 
 import java.time.Instant;
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,26 +35,34 @@ public class ScheduledTransactionsProcessor {
                                               Instant after, Instant until) {
     final TemporalAdjuster adjuster = new NextDayOfMonthAdjuster(txn.getDayOfMonth());
 
-    return computeWithAdjuster(adjuster, txn, after, until);
+    return computeWithAdjuster(adjuster, txn, convertInstant(after),
+        convertInstant(until));
   }
 
   public Collection<Occurence> computeWeekly(WeeklyScheduledTransaction txn,
                                              Instant after, Instant until) {
     final TemporalAdjuster adjuster = TemporalAdjusters.next(txn.getDayOfWeek());
 
-    return computeWithAdjuster(adjuster, txn, after, until);
+    return computeWithAdjuster(adjuster, txn, convertInstant(after), convertInstant(until));
+  }
+
+  private static LocalDate convertInstant(Instant instant) {
+    return LocalDate.from(instant.atOffset(ZoneOffset.UTC));
   }
 
   private Collection<Occurence> computeWithAdjuster(TemporalAdjuster adjuster,
                                                     ScheduledTransaction txn,
-                                                    Instant after, Instant until) {
+                                                    LocalDate after, LocalDate until) {
 
-    final OffsetDateTime untilOffset = until.atOffset(ZoneOffset.UTC);
+    // short-circuit when re-evaluating on the same day
+    if (after.equals(until)) {
+      return Collections.emptyList();
+    }
 
     final List<Occurence> results = new ArrayList<>();
-    for (OffsetDateTime at = after.atOffset(ZoneOffset.UTC).with(adjuster);
-        at.isBefore(untilOffset); at = at.with(adjuster)) {
-      results.add(new Occurence(Instant.from(at), txn));
+    for (LocalDate at = after.with(adjuster);
+        !at.isAfter(until); at = at.with(adjuster)) {
+      results.add(new Occurence(Instant.from(at.atStartOfDay(ZoneId.of("Z"))), txn));
     }
 
     return results;
