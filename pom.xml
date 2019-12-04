@@ -4,7 +4,7 @@
 
   <groupId>org.example</groupId>
   <artifactId>transactions-calculator</artifactId>
-  <version>1.0.0</version>
+  <version>1.0-SNAPSHOT</version>
 
   <properties>
     <java.version>1.8</java.version>
@@ -12,7 +12,7 @@
 
   <scm>
     <connection>scm:git:https://github.com/itzg/transactions-calculator.git</connection>
-    <tag>1.0.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <dependencies>
