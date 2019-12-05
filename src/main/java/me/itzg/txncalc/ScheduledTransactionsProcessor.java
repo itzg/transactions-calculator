@@ -16,10 +16,10 @@ import java.util.List;
  */
 public class ScheduledTransactionsProcessor {
 
-  public Collection<Occurence> compute(Collection<ScheduledTransaction> given,
-                                       Instant after, Instant until) {
+  public Collection<Occurrence> compute(Collection<ScheduledTransaction> given,
+                                        Instant after, Instant until) {
 
-    final List<Occurence> results = new ArrayList<>();
+    final List<Occurrence> results = new ArrayList<>();
     for (ScheduledTransaction txn : given) {
       if (txn instanceof WeeklyScheduledTransaction) {
         results.addAll(computeWeekly(((WeeklyScheduledTransaction) txn), after, until));
@@ -31,16 +31,16 @@ public class ScheduledTransactionsProcessor {
     return results;
   }
 
-  public Collection<Occurence> computeMonthly(MonthlyScheduledTransaction txn,
-                                              Instant after, Instant until) {
+  public Collection<Occurrence> computeMonthly(MonthlyScheduledTransaction txn,
+                                               Instant after, Instant until) {
     final TemporalAdjuster adjuster = new NextDayOfMonthAdjuster(txn.getDayOfMonth());
 
     return computeWithAdjuster(adjuster, txn, convertInstant(after),
         convertInstant(until));
   }
 
-  public Collection<Occurence> computeWeekly(WeeklyScheduledTransaction txn,
-                                             Instant after, Instant until) {
+  public Collection<Occurrence> computeWeekly(WeeklyScheduledTransaction txn,
+                                              Instant after, Instant until) {
     final TemporalAdjuster adjuster = TemporalAdjusters.next(txn.getDayOfWeek());
 
     return computeWithAdjuster(adjuster, txn, convertInstant(after), convertInstant(until));
@@ -50,19 +50,19 @@ public class ScheduledTransactionsProcessor {
     return LocalDate.from(instant.atOffset(ZoneOffset.UTC));
   }
 
-  private Collection<Occurence> computeWithAdjuster(TemporalAdjuster adjuster,
-                                                    ScheduledTransaction txn,
-                                                    LocalDate after, LocalDate until) {
+  private Collection<Occurrence> computeWithAdjuster(TemporalAdjuster adjuster,
+                                                     ScheduledTransaction txn,
+                                                     LocalDate after, LocalDate until) {
 
     // short-circuit when re-evaluating on the same day
     if (after.equals(until)) {
       return Collections.emptyList();
     }
 
-    final List<Occurence> results = new ArrayList<>();
+    final List<Occurrence> results = new ArrayList<>();
     for (LocalDate at = after.with(adjuster);
         !at.isAfter(until); at = at.with(adjuster)) {
-      results.add(new Occurence(Instant.from(at.atStartOfDay(ZoneId.of("Z"))), txn));
+      results.add(new Occurrence(Instant.from(at.atStartOfDay(ZoneId.of("Z"))), txn));
     }
 
     return results;

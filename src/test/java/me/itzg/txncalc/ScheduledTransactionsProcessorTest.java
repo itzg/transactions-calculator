@@ -15,10 +15,10 @@ public class ScheduledTransactionsProcessorTest {
     final Instant after = Instant.parse("2019-01-01T10:15:30.00Z");
     final Instant until = Instant.parse("2019-10-02T10:15:30.00Z");
 
-    final Collection<Occurence> results = new ScheduledTransactionsProcessor()
+    final Collection<Occurrence> results = new ScheduledTransactionsProcessor()
         .computeMonthly(() -> 5, after, until);
 
-    assertThat(results).extracting(Occurence::getWhen)
+    assertThat(results).extracting(Occurrence::getWhen)
         .extracting(Instant::toString)
         .containsExactly(
             "2019-01-05T00:00:00Z",
@@ -38,7 +38,7 @@ public class ScheduledTransactionsProcessorTest {
     final Instant after = Instant.parse("2019-01-05T10:15:30.00Z");
     final Instant until = Instant.parse("2019-01-06T10:15:30.00Z");
 
-    final Collection<Occurence> results = new ScheduledTransactionsProcessor()
+    final Collection<Occurrence> results = new ScheduledTransactionsProcessor()
         .computeMonthly(() -> 5, after, until);
 
     assertThat(results).isEmpty();
@@ -49,10 +49,10 @@ public class ScheduledTransactionsProcessorTest {
     final Instant after = Instant.parse("2019-01-05T23:15:30.00Z");
     final Instant until = Instant.parse("2019-02-05T01:15:30.00Z");
 
-    final Collection<Occurence> results = new ScheduledTransactionsProcessor()
+    final Collection<Occurrence> results = new ScheduledTransactionsProcessor()
         .computeMonthly(() -> 5, after, until);
 
-    assertThat(results).extracting(Occurence::getWhen)
+    assertThat(results).extracting(Occurrence::getWhen)
         .extracting(Instant::toString)
         .containsExactly(
             "2019-02-05T00:00:00Z"
@@ -64,10 +64,10 @@ public class ScheduledTransactionsProcessorTest {
     final Instant after = Instant.parse("2019-01-04T10:15:30.00Z");
     final Instant until = Instant.parse("2019-01-05T10:15:30.00Z");
 
-    final Collection<Occurence> results = new ScheduledTransactionsProcessor()
+    final Collection<Occurrence> results = new ScheduledTransactionsProcessor()
         .computeMonthly(() -> 5, after, until);
 
-    assertThat(results).extracting(Occurence::getWhen)
+    assertThat(results).extracting(Occurrence::getWhen)
         .extracting(Instant::toString)
         .containsExactly(
             "2019-01-05T00:00:00Z"
@@ -79,7 +79,7 @@ public class ScheduledTransactionsProcessorTest {
     final Instant after = Instant.parse("2019-01-05T09:15:30.00Z");
     final Instant until = Instant.parse("2019-01-05T23:15:30.00Z");
 
-    final Collection<Occurence> results = new ScheduledTransactionsProcessor()
+    final Collection<Occurrence> results = new ScheduledTransactionsProcessor()
         .computeMonthly(() -> 5, after, until);
 
     assertThat(results).isEmpty();
@@ -89,10 +89,10 @@ public class ScheduledTransactionsProcessorTest {
     final Instant after = Instant.parse("2019-11-25T10:15:30.00Z");
     final Instant until = Instant.parse("2019-12-26T10:15:30.00Z");
 
-    final Collection<Occurence> results = new ScheduledTransactionsProcessor()
+    final Collection<Occurrence> results = new ScheduledTransactionsProcessor()
         .computeWeekly(() -> DayOfWeek.WEDNESDAY, after, until);
 
-    assertThat(results).extracting(Occurence::getWhen)
+    assertThat(results).extracting(Occurrence::getWhen)
         .extracting(Instant::toString)
         .containsExactly(
             "2019-11-27T00:00:00Z",
@@ -108,7 +108,7 @@ public class ScheduledTransactionsProcessorTest {
     final Instant after = Instant.parse("2019-12-04T10:15:30.00Z");
     final Instant until = Instant.parse("2019-12-05T10:15:30.00Z");
 
-    final Collection<Occurence> results = new ScheduledTransactionsProcessor()
+    final Collection<Occurrence> results = new ScheduledTransactionsProcessor()
         .computeWeekly(() -> DayOfWeek.WEDNESDAY, after, until);
 
     assertThat(results).isEmpty();
@@ -119,10 +119,10 @@ public class ScheduledTransactionsProcessorTest {
     final Instant after = Instant.parse("2019-12-04T10:15:30.00Z");
     final Instant until = Instant.parse("2019-12-11T10:15:30.00Z");
 
-    final Collection<Occurence> results = new ScheduledTransactionsProcessor()
+    final Collection<Occurrence> results = new ScheduledTransactionsProcessor()
         .computeWeekly(() -> DayOfWeek.WEDNESDAY, after, until);
 
-    assertThat(results).extracting(Occurence::getWhen)
+    assertThat(results).extracting(Occurrence::getWhen)
         .extracting(Instant::toString)
         .containsExactly(
             "2019-12-11T00:00:00Z"
@@ -134,10 +134,10 @@ public class ScheduledTransactionsProcessorTest {
     final Instant after = Instant.parse("2019-12-03T10:15:30.00Z");
     final Instant until = Instant.parse("2019-12-04T10:15:30.00Z");
 
-    final Collection<Occurence> results = new ScheduledTransactionsProcessor()
+    final Collection<Occurrence> results = new ScheduledTransactionsProcessor()
         .computeWeekly(() -> DayOfWeek.WEDNESDAY, after, until);
 
-    assertThat(results).extracting(Occurence::getWhen)
+    assertThat(results).extracting(Occurrence::getWhen)
         .extracting(Instant::toString)
         .containsExactly(
             "2019-12-04T00:00:00Z"
@@ -149,7 +149,7 @@ public class ScheduledTransactionsProcessorTest {
     final Instant after = Instant.parse("2019-12-11T10:15:30.00Z");
     final Instant until = Instant.parse("2019-12-11T10:15:30.00Z");
 
-    final Collection<Occurence> results = new ScheduledTransactionsProcessor()
+    final Collection<Occurrence> results = new ScheduledTransactionsProcessor()
         .computeWeekly(() -> DayOfWeek.WEDNESDAY, after, until);
 
     assertThat(results).isEmpty();
@@ -160,14 +160,14 @@ public class ScheduledTransactionsProcessorTest {
     final Instant after = Instant.parse("2019-11-25T10:15:30.00Z");
     final Instant until = Instant.parse("2019-12-26T10:15:30.00Z");
 
-    final Collection<Occurence> results = new ScheduledTransactionsProcessor().compute(
+    final Collection<Occurrence> results = new ScheduledTransactionsProcessor().compute(
         Arrays.asList(
             (WeeklyScheduledTransaction) () -> DayOfWeek.WEDNESDAY,
             (MonthlyScheduledTransaction) () -> 5
         ), after, until
     );
 
-    assertThat(results).extracting(Occurence::getWhen)
+    assertThat(results).extracting(Occurrence::getWhen)
         .extracting(Instant::toString)
         .containsExactly(
             // weekly ones
