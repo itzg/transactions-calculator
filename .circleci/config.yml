@@ -3,8 +3,30 @@ version: 2.1
 orbs:
   maven: circleci/maven@0.0.12
 
+jobs:
+  deploy:
+    executor: maven/maven
+    steps:
+      - checkout
+      - maven/with_cache:
+          steps:
+            run:
+              name: deploy
+              command: mvn -B deploy --settings settings.xml
+
 workflows:
-  build-test:
+  test:
     jobs:
       - maven/test:
-          name: build-test
+          name: test
+          filters:
+            tags:
+              ignore: /\d+\.\d+\.\d+/
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            tags:
+              only: /\d+\.\d+\.\d+/
+            branches:
+              ignore: /.*/
