@@ -55,9 +55,9 @@
 
   <distributionManagement>
     <repository>
-      <id>github</id>
-      <name>GitHub Maven Packages</name>
-      <url>https://maven.pkg.github.com/itzg/transactions-calculator</url>
+      <id>bintray-itzgeoff-artifacts</id>
+      <name>itzgeoff-artifacts</name>
+      <url>https://api.bintray.com/maven/itzgeoff/artifacts/${project.artifactId}/;publish=1</url>
     </repository>
   </distributionManagement>
 
