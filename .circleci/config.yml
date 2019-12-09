@@ -10,9 +10,9 @@ jobs:
       - checkout
       - maven/with_cache:
           steps:
-            run:
-              name: deploy
-              command: mvn -B deploy --settings settings.xml
+            - run:
+                name: deploy
+                command: mvn -B deploy --settings settings.xml
 
 workflows:
   test:
