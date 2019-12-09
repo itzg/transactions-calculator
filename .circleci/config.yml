@@ -4,15 +4,13 @@ orbs:
   maven: circleci/maven@0.0.12
 
 jobs:
-  deploy:
+  publish:
     executor: maven/maven
     steps:
       - checkout
-      - maven/with_cache:
-          steps:
-            - run:
-                name: deploy
-                command: mvn -B deploy --settings settings.xml
+      - run:
+          name: Publish
+          command: mvn -B deploy --settings settings.xml
 
 workflows:
   test:
@@ -24,7 +22,7 @@ workflows:
               ignore: /\d+\.\d+\.\d+/
   deploy:
     jobs:
-      - deploy:
+      - publish:
           filters:
             tags:
               only: /\d+\.\d+\.\d+/
